@@ -79,7 +79,25 @@ router.get('/queryall',(req,res) => {
         }
     })
 });
-
+//設置用戶
+router.get('/setuid',(req,res) => {
+    let {uid , oid} = req.query;
+    connection.query('update orders set uid = ? where oid = ?',[uid,oid],(error,result) => {
+        if (error) throw error;
+        if (result.affectedRows === 1) {
+            res.json({
+                code: 0,
+                msg: "success"
+            })
+        }
+        else {
+            res.json({
+                code: 1,
+                msg: "fail"
+            })
+        }
+    })
+});
 
 
 module.exports = router;

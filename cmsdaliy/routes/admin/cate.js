@@ -33,6 +33,24 @@ router.get('/querycate',(req,res) => {
         res.json({data,total});
     });
 });
+
+// wx后台，查询主页商品列表
+router.get('/query',(req,res) => {
+    let total = 0;
+    let size = 5;
+    let goodslist = [];
+    let currentpage = req.query.currentpage;
+    connection.query('select * from goods order by gid asc',(error,result) =>{
+        if (error) throw error;
+        total = Math.floor(result.length / 5);
+        goodslist = result.slice((currentpage-1)*size,currentpage*size);
+        res.json({
+            total,
+            goodslist
+        });
+    })
+});
+
 //获取一级标题
 router.get('/querylevelcate',(req,res) => {
     connection.query('select * from category where pid=0 order by cid asc',(error,result) => {
